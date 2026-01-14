@@ -1,6 +1,6 @@
 import { Box, Typography, Button, Paper, Chip, Divider, Alert, Stack, Avatar, Skeleton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, type JSX } from "react";
 import { usePosts } from "../../hooks/usePosts";
 import type { Post } from "../../interface/Post";
 import type { User } from "../../interface/User";
@@ -10,13 +10,7 @@ import { getUsers } from "../../apis/users";
 import DeleteBlog from "./components/DeleteBlog";
 import BlogShare from "./components/BlogShare";
 import { useAuth } from "../../hooks/useAuth";
-
-const stripHtmlTags = (html: string): string => {
-    if (!html) return "";
-    const div = document.createElement("div");
-    div.innerHTML = html;
-    return div.textContent || div.innerText || "";
-};
+import { renderHtml } from "../../global/utilities/htmlUtilities";
 
 const PostView = () => {
     const { posts, fetchPosts, loading } = usePosts();
@@ -158,7 +152,7 @@ const PostView = () => {
                 <Typography variant="body1" component="div" sx={{
                     fontSize: { xs: "0.875rem", md: "1rem" },  lineHeight: 1.8,  color: "text.primary",  mb: 4,
                     "& p": { mb: 2 },  whiteSpace: "pre-wrap",  wordBreak: "break-word"}}>
-                    {stripHtmlTags(post.body)}
+                    {renderHtml(post.body)}
                 </Typography>
 
                 {post.tags && post.tags.length > 0 && (

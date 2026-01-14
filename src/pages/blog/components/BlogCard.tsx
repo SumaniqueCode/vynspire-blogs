@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { type User } from "../../../interface/User";
 import { getUsers } from "../../../apis/users";
 import { toast } from "react-toastify";
+import { stripHtmlTags } from "../../../global/utilities/htmlUtilities";
 interface BlogProps {
     post: Post;
 }
@@ -66,7 +67,7 @@ const BlogCard = ({ post }: BlogProps) => {
                             color="text.secondary"
                             sx={{ ml: 1, overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", }}
                         >
-                            {(post.body)}
+                            {stripHtmlTags(post.body)}
                         </Typography>
                     </Grid>
                 </Grid>
