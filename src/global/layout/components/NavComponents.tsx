@@ -22,7 +22,6 @@ const { logoutUser, isAuthenticated, user } = useAuth();
     toast.success("Logged out successfully!")
     navigate('/login');
   };
-  console.log(user)
   return (
     <>
       <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, ml: 'auto' }}>
