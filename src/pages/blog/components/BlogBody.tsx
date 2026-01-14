@@ -11,9 +11,9 @@ const BlogBody = ({ html }: BlogBodyProps) => {
       component="article"
       sx={{
         color: "text.primary", fontSize: { xs: "0.95rem", sm: "1rem", md: "1.05rem" }, lineHeight: 1.8, mb: 8, wordBreak: "break-word",
-        "& h1": { fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.8rem" }, lineHeight: 1.25, fontWeight: 700, mt: 4, mb: 2, letterSpacing: "-0.5px" },
-        "& h2": { fontSize: { xs: "1.5rem", sm: "1.75rem", md: "2.1rem" }, lineHeight: 1.3, fontWeight: 600, mt: 3, mb: 2, borderBottom: "2px solid", borderColor: "divider", pb: 1 },
-        "& h3": { fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.8rem" }, lineHeight: 1.25, fontWeight: 600, mt: 2.5, mb: 1 },
+        "& h1": { fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.8rem" }, lineHeight: 1.25, fontWeight: 700, mt: 3, mb: 2, letterSpacing: "-0.5px" },
+        "& h2": { fontSize: { xs: "1.5rem", sm: "1.75rem", md: "2.1rem" }, lineHeight: 1.3, fontWeight: 600, mt: 2, mb: 2, borderBottom: "2px solid", borderColor: "divider", pb: 1 },
+        "& h3": { fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.8rem" }, lineHeight: 1.25, fontWeight: 600, mt: 1, mb: 1 },
         "& p": { mb: 2.5, fontSize: { xs: "0.95rem", sm: "1rem", md: "1.05rem" }, lineHeight: 1.75, color: "text.primary" },
         "& strong, & b": { fontWeight: 700 },
         "& em, & i": { fontStyle: "italic" },
