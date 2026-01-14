@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import type { Post } from "../../interface/Post";
 import { Cancel } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const PostSchema = Yup.object({
   title: Yup.string().required("Title is required"),
@@ -58,7 +59,7 @@ const PostEdit = () => {
         updatedAt: new Date().toISOString(),
         image: values.image
       });
-
+        toast.success("Blog Added successfully!")
       navigate(`/posts/view/${post.id}`);
     },
   });

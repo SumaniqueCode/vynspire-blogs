@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, TextField, Typography, Container, CircularProgress } from "@mui/material";
 import { Cancel } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const PostCreate = () => {
   const { addPost } = usePosts();
@@ -12,7 +13,6 @@ const PostCreate = () => {
   const [author, setAuthor] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Get author ID from localStorage
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
@@ -34,17 +34,17 @@ const PostCreate = () => {
     }),
     onSubmit: async (values) => {
       if (author === null) {
-        alert("Author not found. Please login again.");
+        toast.error("Author not found. Please login again.");
         return;
       }
 
       const sanitizedBody = values.body.replace(/<br\s*\/?>/gi, "").trim();
       if (!sanitizedBody) {
-        alert("Body cannot be empty");
+        toast.error("Body cannot be empty");
         return;
       }
 
-      setLoading(true); // start loading
+      setLoading(true); 
       try {
         await addPost({
           title: values.title,
@@ -56,9 +56,10 @@ const PostCreate = () => {
           author,
           image: values.image
         });
+        toast.success("Blog Added successfully!")
         navigate("/posts");
       } finally {
-        setLoading(false); // stop loading
+        setLoading(false); 
       }
     },
   });
