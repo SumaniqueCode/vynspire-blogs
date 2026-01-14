@@ -1,77 +1,74 @@
 import { Box, Typography, Button, Paper, Chip, Divider, Alert, Stack, Avatar, Skeleton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { usePosts } from "../../hooks/usePosts";
 import type { Post } from "../../interface/Post";
-import { ArrowBack, Delete, Edit, Person, CalendarToday } from "@mui/icons-material";
+import type { User } from "../../interface/User";
+import { ArrowBack, Edit, Person, CalendarToday} from "@mui/icons-material";
+import { formatDate } from "../../global/utilities/DateFormatter";
+import { getUsers } from "../../apis/users";
+import DeleteBlog from "./components/DeleteBlog";
+import BlogShare from "./components/BlogShare";
 
 const stripHtmlTags = (html: string): string => {
-    const tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
+    if (!html) return "";
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
 };
 
-const formatDate = (dateString?: string): string => {
-    if (!dateString) return "Unknown date";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
-};
-
-const PostView: React.FC = () => {
-    const { posts, removePost, fetchPosts, loading } = usePosts();
+const PostView = () => {
+    const { posts, fetchPosts, loading } = usePosts();
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [post, setPost] = useState<Post | null>(null);
     const [error, setError] = useState<string>("");
+    const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
         fetchPosts();
     }, [fetchPosts]);
-    
+
+    useEffect(() => {
+        const getUsersData = async () => {
+            try {
+                const res = await getUsers();
+                setUsers(res);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        };
+        getUsersData();
+    }, []);
+
     useEffect(() => {
         setError("");
-
         if (!id) {
             setError("Invalid post ID");
             return;
         }
 
         const found = posts.find((p) => p.id === id);
-        if (!found) {
+        if (!found && !loading) {
             setError("Post not found");
             setPost(null);
-        } else {
+        } else if (found) {
             setPost(found);
         }
+    }, [id, posts, loading]);
 
-    }, [id, posts]);
+    const author = useMemo(() =>
+        users?.find((u) => u.id == post?.author),
+        [users, post?.author]
+    );
 
-    const handleDelete = async (): Promise<void> => {
-        if (!post) return;
+    const handleEdit = useCallback(() => {
+        if (post) navigate(`/posts/edit/${post.id}`);
+    }, [post, navigate]);
 
-        if (window.confirm("Are you sure you want to delete this post?")) {
-            try {
-                await removePost(post.id);
-                navigate("/posts");
-            } catch (err) {
-                setError("Failed to delete post");
-            }
-        }
-    };
-
-    const handleEdit = (): void => {
-        if (post) {
-            navigate(`/posts/edit/${post.id}`);
-        }
-    };
-
-    const handleBack = (): void => {
+    const handleBack = useCallback(() => {
         navigate("/posts");
-    };
+    }, [navigate]);
 
     if (loading) {
         return (
@@ -89,92 +86,52 @@ const PostView: React.FC = () => {
     if (error || !post) {
         return (
             <Box sx={{ maxWidth: 900, mx: "auto", mt: { xs: 4, md: 8 }, px: { xs: 2, sm: 3 } }}>
-                <Alert
-                    severity="error"
-                    sx={{ mb: 3 }}
-                    action={
-                        <Button color="inherit" size="small" onClick={handleBack}>
-                            Go Back
-                        </Button>
-                    }
-                >
+                <Alert severity="error" sx={{ mb: 3 }}>
                     {error || "Post not found"}
                 </Alert>
-                <Button
-                    variant="contained"
-                    startIcon={<ArrowBack />}
-                    onClick={handleBack}
-                    sx={{ textTransform: "none" }}
-                >
-                    Back to Dashboard
+                <Button variant="contained" startIcon={<ArrowBack />} onClick={handleBack} sx={{ textTransform: "none" }}>
+                    Back to Posts
                 </Button>
             </Box>
         );
     }
 
     return (
-        <Box sx={{ maxWidth: 900, mx: "auto", mt: { xs: 4, md: 8 }, px: { xs: 2, sm: 3 }, pb: 6 }}>
-            {/* Action Buttons */}
+        <Box sx={{ maxWidth: 900, mx: "auto", mt: { xs: 3, md: 6 }, px: { xs: 2, sm: 3 }, pb: 6 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
                 <Button
                     variant="outlined"
                     startIcon={<ArrowBack />}
                     onClick={handleBack}
-                    sx={{ textTransform: "none" }}
-                >
+                    sx={{ background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', color: 'white', textTransform: "none",
+                        '&:hover': {
+                            background: 'linear-gradient(45deg, #002884 0%, #001654 90%)',
+                        }}}>
                     Back
                 </Button>
                 <Stack direction="row" spacing={1}>
-                    <Button
-                        variant="outlined"
-                        startIcon={<Edit />}
-                        onClick={handleEdit}
-                        sx={{ textTransform: "none" }}
-                    >
+                    <Button variant="outlined" startIcon={<Edit />} onClick={handleEdit}
+                        sx={{ background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', color: 'white', textTransform: "none",
+                            '&:hover': {
+                                background: 'linear-gradient(45deg, #002884 0%, #001654 90%)',
+                            }}}>
                         Edit
                     </Button>
-                    <Button
-                        variant="outlined"
-                        color="error"
-                        startIcon={<Delete />}
-                        onClick={handleDelete}
-                        sx={{ textTransform: "none" }}
-                    >
-                        Delete
-                    </Button>
+                    <DeleteBlog post={post} />
                 </Stack>
             </Box>
-
-            {/* Main Content */}
-            <Paper elevation={3} sx={{ p: { xs: 3, sm: 4, md: 5 } }}>
-                {/* Title */}
-                <Typography
-                    variant="h3"
-                    component="h1"
-                    fontWeight={700}
-                    gutterBottom
-                    sx={{
-                        fontSize: { xs: "1.75rem", sm: "2.5rem", md: "3rem" },
-                        lineHeight: 1.2,
-                        mb: 3,
-                    }}
-                >
+            <Paper elevation={3} sx={{ px: { xs: 3, sm: 4, md: 5 }, py: { xs: 2, md: 3, lg: 4 } }}>
+                <Typography variant="h3" component="h1" fontWeight={700} gutterBottom sx={{ fontSize: { xs: "1.75rem", sm: "2.5rem", md: "3rem" }, lineHeight: 1.2, mb: 2, }}>
                     {post.title}
                 </Typography>
 
-                {/* Metadata */}
-                <Stack
-                    direction={{ xs: "column", sm: "row" }}
-                    spacing={2}
-                    divider={<Divider orientation="vertical" flexItem />}
-                    sx={{ mb: 3, flexWrap: "wrap" }}
-                >
+                <Stack direction={{ xs: "column", sm: "row" }} spacing={2} divider={<Divider orientation="vertical" flexItem />} sx={{ mb: 3, ml: { xs: 0, sm: 2 }, flexWrap: "wrap" }}>
                     <Box display="flex" alignItems="center" gap={1}>
-                        <Avatar sx={{ width: 32, height: 32, bgcolor: "primary.main" }}>
-                            <Person sx={{ fontSize: 18 }} />
+                        <Avatar src={author?.avatar || ""} sx={{ width: 32, height: 32, bgcolor: "primary.main" }}>
+                            {author?.name?.[0]?.toUpperCase() || <Person sx={{ fontSize: 18 }} />}
                         </Avatar>
-                        <Typography variant="body2" color="text.secondary">
-                            {post.author}
+                        <Typography variant="body2" color="text.secondary" fontWeight={500}>
+                            {author?.name || `User ${post.author}`}
                         </Typography>
                     </Box>
 
@@ -185,49 +142,38 @@ const PostView: React.FC = () => {
                         </Typography>
                     </Box>
                 </Stack>
+                <Divider sx={{ mb: 3 }} />
+                {post.image && (
+                    <Box sx={{ display: 'flex', mb: 3 }}>
+                        <Box component="img" src={post.image} alt={post.title}
+                         sx={{ mx: 'auto', width: '100%', maxWidth: 800, height: { xs: 250, sm: 300, lg: 400 }, objectFit: "cover", borderRadius: 2, border: "1px solid", borderColor: "divider"}}
+                         loading="lazy" />
+                    </Box>
+                )}
 
-                <Divider sx={{ mb: 4 }} />
-
-                {/* Post Body */}
-                <Typography
-                    variant="body1"
-                    component="div"
-                    sx={{
-                        fontSize: { xs: "1rem", md: "1.125rem" },
-                        lineHeight: 1.8,
-                        color: "text.primary",
-                        "& p": { mb: 2 },
-                        whiteSpace: "pre-wrap",
-                        wordBreak: "break-word",
-                    }}
-                >
+                <Typography variant="body1" component="div" sx={{
+                    fontSize: { xs: "0.875rem", md: "1rem" },  lineHeight: 1.8,  color: "text.primary",  mb: 4,
+                    "& p": { mb: 2 },  whiteSpace: "pre-wrap",  wordBreak: "break-word"}}>
                     {stripHtmlTags(post.body)}
                 </Typography>
 
-                {/* Tags */}
                 {post.tags && post.tags.length > 0 && (
-                    <>
-                        <Divider sx={{ my: 4 }} />
-                        <Box>
-                            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                                Tags
-                            </Typography>
-                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                                {post.tags.map((tag: string, index: number) => (
-                                    <Chip
-                                        key={index}
-                                        label={tag}
-                                        variant="outlined"
-                                        size="small"
-                                        sx={{ mt: 1 }}
-                                    />
-                                ))}
-                            </Stack>
-                        </Box>
-                    </>
+                    <Box sx={{ mb: 4 }}>
+                        <Typography variant="subtitle2" color="text.secondary" gutterBottom fontWeight={600}>
+                            Tags
+                        </Typography>
+                        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                            {post.tags.map((tag: string, index: number) => (
+                                <Chip  key={index}  label={tag}  size="small"
+                                    sx={{ background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', color: 'white', fontWeight: 500,
+                                        '&:hover': {  background: 'linear-gradient(45deg, #002884 0%, #001654 90%)',
+                                    } }} />  
+                            ))}
+                        </Stack>
+                    </Box>
                 )}
-
-                {/* Update Info */}
+                <Divider sx={{ my: 4 }} />
+                <BlogShare post={post} />
                 {post.updatedAt && post.updatedAt !== post.createdAt && (
                     <Box mt={4} pt={3} borderTop="1px solid" borderColor="divider">
                         <Typography variant="caption" color="text.secondary">

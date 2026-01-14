@@ -12,12 +12,10 @@ export const useAuth = () => {
     try {
       dispatch(loginStart());
 
-      // fetch users from API
       const apiUsers = await api.get("/users");
       const localUsers = JSON.parse(localStorage.getItem("users") || "[]");
       const allUsers = [...apiUsers.data, ...localUsers];
 
-      // match email AND password
       const matchedUser = allUsers.find(
         (u: any) => u.email === email && u.password === password
       );
@@ -28,14 +26,12 @@ export const useAuth = () => {
         return;
       }
 
-      // store fake token
       const fakeToken = "fake-jwt-token";
       localStorage.setItem("token", fakeToken);
 
-      // store user data (including id) in localStorage
       localStorage.setItem(
         "user",
-        JSON.stringify({ id: matchedUser.id, name: matchedUser.name, email: matchedUser.email })
+        JSON.stringify({ id: matchedUser.id, name: matchedUser.name, email: matchedUser.email, avatar: matchedUser.avatar })
       );
 
       dispatch(

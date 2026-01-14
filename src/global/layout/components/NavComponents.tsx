@@ -1,12 +1,12 @@
 import { Avatar, Box, Button, IconButton, Menu, MenuItem, Paper, Typography } from "@mui/material"
 import { Link, useNavigate } from "react-router-dom"
 import { LogoutOutlined, Menu as MenuIcon } from "@mui/icons-material"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "react-toastify"
 import { useAuth } from "../../../hooks/useAuth"
 
 const NavComponents = () => {
-const { logoutUser, isAuthenticated } = useAuth();
+const { logoutUser, isAuthenticated, user } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorE2, setAnchorE2] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -18,13 +18,11 @@ const { logoutUser, isAuthenticated } = useAuth();
     setAnchorEl(null);
   };
   const handleLogout = () => {
-    logoutUser
+    logoutUser()
     toast.success("Logged out successfully!")
     navigate('/login');
   };
-  useEffect(() => {
-
-  })
+  console.log(user)
   return (
     <>
       <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, ml: 'auto' }}>
@@ -32,9 +30,7 @@ const { logoutUser, isAuthenticated } = useAuth();
           <Box sx={{display: 'flex', gap:4, alignItems: 'center'}}>
             <Link to="/posts" > <Button variant="contained" size='medium' sx={{ color: 'black', fontWeight: "bold", borderBottom: 2, px: 5, borderRadius: '8px', backgroundColor: 'white' }}>Blogs</Button></Link>
             <Paper onClick={() => setAnchorE2(!anchorE2)} elevation={0} sx={{ display: "flex", alignItems: "center", gap: 2, minWidth: 220, }}  >
-              <Avatar sx={{ background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', width: 48, height: 48, fontSize: 18, }}>
-                {/* {user.name.charAt(0).toUpperCase()} */}
-              </Avatar>
+              <Avatar src={user?.avatar} sx={{ background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', width: 48, height: 48, fontSize: 18, }} />
               <Box>
                 <Typography variant="subtitle1" fontWeight={600}>
                   Suman Regmi

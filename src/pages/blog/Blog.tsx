@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { usePosts } from "../../hooks/usePosts";
 import type { Post } from "../../interface/Post";
 import { Add, Search } from "@mui/icons-material";
-import BlogCard from "./BlogCard";
+import BlogCard from "./components/BlogCard";
 
-const POSTS_PER_PAGE = 6;
+const POSTS_PER_PAGE = 5;
 
 const Blog = () => {
   const { posts, loading, error, fetchPosts } = usePosts();
@@ -69,35 +69,38 @@ const Blog = () => {
   };
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 3, md: 4 }, maxWidth: 1400, mx: "auto" }}>
+    <Box sx={{ pt:4, maxWidth: 1200, mx: "auto" }}>
       <Grid container spacing={2} sx={{ mb: 2, alignItems: 'center' }}>
         {/* <Grid size={{ xs: 12, md: 4 }}>
           <Typography variant="h4" component="h1" fontWeight={600}>
             Blog Dashboard
           </Typography>
         </Grid> */}
-        <Grid size={{ xs: 12, md: 10, }}>
+        <Grid size={{ xs: 12, md: 9, lg:10 }}>
           <TextField
             size="small"
+            sx={{ background: 'white', borderRadius: 2 }}
             fullWidth
             placeholder="Search posts by title or content..."
             value={searchQuery}
             onChange={handleSearchChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }
             }}
           />
         </Grid>
-        <Grid size={{ xs: 12, md: 2 }}>
+        <Grid size={{ xs: 12, md: 3, lg:2 }}>
           <Button
             variant="contained"
             startIcon={<Add />}
             onClick={() => navigate("/posts/create")}
-            sx={{ textTransform: "none", px: 3 }}
+            sx={{ textTransform: "none", px: 3, background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', color: 'white', }}
           >
             Create New Post
           </Button>
@@ -123,7 +126,7 @@ const Blog = () => {
         <>
           <Grid container spacing={3}>
             {paginatedPosts.map((post: Post) => (
-              <Grid size={{ xs: 12, md: 6 }} key={post.id}>
+              <Grid size={12} key={post.id}>
                 <BlogCard post={post} />
               </Grid>
             ))}
@@ -131,15 +134,7 @@ const Blog = () => {
 
           {pageCount > 1 && (
             <Box mt={6} display="flex" justifyContent="center">
-              <Pagination
-                count={pageCount}
-                page={page}
-                onChange={handlePageChange}
-                color="primary"
-                size="large"
-                showFirstButton
-                showLastButton
-              />
+              <Pagination count={pageCount} page={page} onChange={handlePageChange} color="primary" size="large" showFirstButton showLastButton/>
             </Box>
           )}
         </>

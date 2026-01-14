@@ -3,7 +3,8 @@ export interface Post {
   title: string;
   body: string;   
   tags: string[];   
-  author: number;  
+  author: number; 
+  image: string; 
   createdAt: string;  
   updatedAt: string;    
 }

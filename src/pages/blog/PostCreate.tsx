@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usePosts } from "../../hooks/usePosts";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, TextField, Typography, Container, CircularProgress } from "@mui/material";
+import { Cancel } from "@mui/icons-material";
 
 const PostCreate = () => {
   const { addPost } = usePosts();
@@ -25,6 +26,7 @@ const PostCreate = () => {
       title: "",
       body: "",
       tags: "",
+      image: "https://picsum.photos/400",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
@@ -52,6 +54,7 @@ const PostCreate = () => {
             .map((t) => t.trim())
             .filter((t) => t),
           author,
+          image: values.image
         });
         navigate("/posts");
       } finally {
@@ -61,64 +64,30 @@ const PostCreate = () => {
   });
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8 }}>
-      <Typography variant="h5" mb={2}>
-        Create Post
-      </Typography>
-
-      <Box component="form" onSubmit={formik.handleSubmit}>
-        {/* Title */}
-        <Box mb={2}>
-          <TextField
-            fullWidth
-            label="Title"
-            {...formik.getFieldProps("title")}
-            error={!!formik.errors.title && formik.touched.title}
-            helperText={formik.touched.title && formik.errors.title}
-          />
-        </Box>
-
-        {/* Body */}
-        <Box mb={2}>
-          <TextField
-            fullWidth
-            label="Body"
-            multiline
-            minRows={5}
-            {...formik.getFieldProps("body")}
-            error={!!formik.errors.body && formik.touched.body}
-            helperText={formik.touched.body && formik.errors.body}
-          />
-        </Box>
-
-        {/* Tags */}
-        <Box mb={2}>
-          <TextField
-            fullWidth
-            label="Tags (comma separated)"
-            {...formik.getFieldProps("tags")}
-          />
-        </Box>
-
-        {/* Author ID */}
-        <Box mb={2}>
-          <TextField
-            fullWidth
-            label="Author ID"
-            value={author || ""}
-            InputProps={{ readOnly: true }}
-          />
-        </Box>
-
-        <Button fullWidth type="submit" variant="contained" disabled={loading}>
-          {loading ? (
-            <CircularProgress size={24} color="inherit" />
-          ) : (
-            "Create Post"
-          )}
-        </Button>
+    <Container maxWidth="sm" sx={{ mt: 6, mb: 4, boxShadow: 2, borderBottom: 2, borderLeft: 2, borderRadius: 6, py: 6, px: 2, bgcolor: "white" }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Typography variant="h5" mb={2}>
+          Create Post
+        </Typography>
+        <Link to='/posts/'><Cancel sx={{ color: 'red' }} /></Link>
       </Box>
-    </Container>
+
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, }} component="form" onSubmit={formik.handleSubmit}>
+        <TextField fullWidth label="Title" {...formik.getFieldProps("title")} error={!!formik.errors.title && formik.touched.title} helperText={formik.touched.title && formik.errors.title} />
+        <TextField fullWidth label="Image url" placeholder="Leave blank for random image." {...formik.getFieldProps("image")} error={!!formik.errors.title && formik.touched.title} helperText={formik.touched.title && formik.errors.title} />
+        <TextField fullWidth label="Body" multiline minRows={5} {...formik.getFieldProps("body")} error={!!formik.errors.body && formik.touched.body} helperText={formik.touched.body && formik.errors.body} />
+        <TextField fullWidth label="Tags (comma separated)" {...formik.getFieldProps("tags")} />
+        <Box sx={{ display: 'flex' }}>
+          <Button type="submit" variant="contained" sx={{ mx: 'auto', background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', mt: 2, px: { xs: 1, md: 3, lg: 8 } }} disabled={loading}>
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Create Post"
+            )}
+          </Button>
+        </Box>
+      </Box>
+    </Container >
   );
 };
 
