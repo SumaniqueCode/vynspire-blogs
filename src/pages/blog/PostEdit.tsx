@@ -43,7 +43,7 @@ const PostEdit = () => {
       title: post?.title || "",
       body: post?.body || "",
       tags: post?.tags?.join(", ") || "",
-      image: post?.image || "picsum.photos/400"
+      image: post?.image || "https://picsum.photos/1080/720"
     },
     validationSchema: PostSchema,
     onSubmit: async (values) => {

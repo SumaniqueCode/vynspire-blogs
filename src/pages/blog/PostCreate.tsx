@@ -26,7 +26,7 @@ const PostCreate = () => {
       title: "",
       body: "",
       tags: "",
-      image: "https://picsum.photos/400",
+      image: "https://picsum.photos/1080/720",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
