@@ -26,17 +26,17 @@ const { logoutUser, isAuthenticated, user } = useAuth();
   return (
     <>
       <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, ml: 'auto' }}>
-        {isAuthenticated ? (
+        {isAuthenticated && user ? (
           <Box sx={{display: 'flex', gap:4, alignItems: 'center'}}>
             <Link to="/posts" > <Button variant="contained" size='medium' sx={{ color: 'black', fontWeight: "bold", borderBottom: 2, px: 5, borderRadius: '8px', backgroundColor: 'white' }}>Blogs</Button></Link>
             <Paper onClick={() => setAnchorE2(!anchorE2)} elevation={0} sx={{ display: "flex", alignItems: "center", gap: 2, minWidth: 220, }}  >
-              <Avatar src={user?.avatar} sx={{ background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', width: 48, height: 48, fontSize: 18, }} />
+              <Avatar src={user.avatar} sx={{ background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', width: 48, height: 48, fontSize: 18, }} />
               <Box>
                 <Typography variant="subtitle1" fontWeight={600}>
-                  Suman Regmi
+                  {user.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  @regmisuman
+                  @{user.email.replace("@gmail.com", "")}
                 </Typography>
               </Box>
               <Menu sx={{ top: 50 }} open={anchorE2} onClose={() => setAnchorE2(false)} anchorOrigin={{ vertical: "top", horizontal: "right" }} transformOrigin={{ vertical: "top", horizontal: "right" }}

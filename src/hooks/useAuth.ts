@@ -40,8 +40,8 @@ export const useAuth = () => {
             email: matchedUser.email,
             name: matchedUser.name,
             id: matchedUser.id,
-            avatar: "",
-            createdAt: ""
+            avatar: matchedUser.avatar,
+            createdAt: matchedUser.createdAt
           },
           token: fakeToken,
         })
