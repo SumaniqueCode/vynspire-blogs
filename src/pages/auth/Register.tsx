@@ -14,7 +14,7 @@ const RegisterSchema = Yup.object({
 const Register = () => {
   const navigate = useNavigate();
   const formik = useFormik({
-    initialValues: { name: "", email: "", password: "" },
+    initialValues: { name: "", email: "", password: "", avatar: "https://picsum.photos/400" },
     validationSchema: RegisterSchema,
     onSubmit: async (values) => {
       try {
@@ -31,88 +31,21 @@ const Register = () => {
     },
   });
 
-  const { values, errors, touched, handleChange, handleSubmit, isSubmitting } = formik;
-
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-      sx={{
-        bgcolor: "white",
-        py: 4,
-        mt:6,
-        borderRadius: 3,
-        boxShadow: 6,
-      }}
-    >
-      <Box
-        sx={{
-          marginTop: 5,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+    <Container component="main" maxWidth="xs" sx={{ bgcolor: "white", py: 4, mt: 6, borderRadius: 3, boxShadow: 6, }}  >
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", }}      >
         <Avatar sx={{ m: 1, bgcolor: "primary.dark" }} />
         <Typography component="h1" variant="h5">
           Register
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="name"
-            label="Name"
-            name="name"
-            size="small"
-            value={values.name}
-            onChange={handleChange}
-          />
-          {errors.name && touched.name && (
-            <Typography color="error" variant="body2">{errors.name}</Typography>
-          )}
-
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email"
-            name="email"
-            size="small"
-            value={values.email}
-            onChange={handleChange}
-          />
-          {errors.email && touched.email && (
-            <Typography color="error" variant="body2">{errors.email}</Typography>
-          )}
-
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="password"
-            label="Password"
-            name="password"
-            type="password"
-            size="small"
-            value={values.password}
-            onChange={handleChange}
-          />
-          {errors.password && touched.password && (
-            <Typography color="error" variant="body2">{errors.password}</Typography>
-          )}
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2, borderRadius: "25px", textTransform: "none" }}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? <CircularProgress size={24} color="inherit" /> : "Register"}
+        <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{width:1, display:'flex', flexDirection:'column', gap:2, mt: 4 }}>
+          <TextField required fullWidth label="Name" size="small" {...formik.getFieldProps("name")} error={!!formik.errors.name && formik.touched.name} helperText={formik.touched.name && formik.errors.name} />
+          <TextField required fullWidth label="Email" size="small" {...formik.getFieldProps("email")} error={!!formik.errors.email && formik.touched.email} helperText={formik.touched.email && formik.errors.email} />
+          <TextField required fullWidth label="Password" type="password" size="small" {...formik.getFieldProps("password")} error={!!formik.errors.password && formik.touched.password} helperText={formik.touched.password && formik.errors.password} />
+          <TextField fullWidth size="small" label="Image url" placeholder="Enter image url." {...formik.getFieldProps("avatar")} error={!!formik.errors.avatar && formik.touched.avatar} helperText={formik.touched.avatar && formik.errors.avatar} />
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, borderRadius: "25px", textTransform: "none" }} disabled={formik.isSubmitting} >
+            {formik.isSubmitting ? <CircularProgress size={24} color="inherit" /> : "Register"}
           </Button>
 
           <Link to="/login" style={{ textDecoration: "none" }}>

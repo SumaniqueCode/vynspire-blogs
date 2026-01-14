@@ -18,7 +18,7 @@ const LoginSchema = Yup.object({
 });
 
 const Login = () => {
-    const { login, isAuthenticated, loading, error } = useAuth();
+    const { login, isAuthenticated, loading } = useAuth();
 
     const formik = useFormik({
         initialValues: { email: "", password: "" },
@@ -26,84 +26,19 @@ const Login = () => {
         onSubmit: (values) => login(values.email, values.password),
     });
     if (isAuthenticated) return <Navigate to="/posts" />;
-    const { values, errors, touched, handleChange, handleSubmit } = formik;
 
     return (
-        <Container
-            component="main"
-            maxWidth="xs"
-            sx={{
-                bgcolor: "white",
-                py: 4,
-                mt: 6,
-                borderRadius: 3,
-                boxShadow: 6,
-            }}
-        >
-            <Box
-                sx={{
-                    marginTop: 5,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
-            >
+        <Container component="main" maxWidth="xs" sx={{ bgcolor: "white", py: 4, mt: 6, borderRadius: 3, boxShadow: 6, }} >
+            <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", }}            >
                 <Avatar sx={{ m: 1, bgcolor: "primary.dark" }} />
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
 
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email"
-                        name="email"
-                        autoComplete="email"
-                        size="small"
-                        value={values.email}
-                        onChange={handleChange}
-                    />
-                    {errors.email && touched.email && (
-                        <Typography color="error" variant="body2">
-                            {errors.email}
-                        </Typography>
-                    )}
-
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        size="small"
-                        value={values.password}
-                        onChange={handleChange}
-                    />
-                    {errors.password && touched.password && (
-                        <Typography color="error" variant="body2">
-                            {errors.password}
-                        </Typography>
-                    )}
-
-                    {error && (
-                        <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-                            {error}
-                        </Typography>
-                    )}
-
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2, borderRadius: "25px", textTransform: "none" }}
-                        disabled={loading}
-                    >
+                <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ width: 1, display: 'flex', flexDirection: 'column', gap: 2, mt: 4 }}>
+                    <TextField required fullWidth label="Email" size="small" {...formik.getFieldProps("email")} error={!!formik.errors.email && formik.touched.email} helperText={formik.touched.email && formik.errors.email} />
+                    <TextField required fullWidth label="Password" type="password" size="small" {...formik.getFieldProps("password")} error={!!formik.errors.password && formik.touched.password} helperText={formik.touched.password && formik.errors.password} />
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, borderRadius: "25px", textTransform: "none" }} disabled={loading} >
                         {loading ? <CircularProgress size={24} color="inherit" /> : "Sign In"}
                     </Button>
 

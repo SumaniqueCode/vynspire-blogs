@@ -82,10 +82,10 @@ const PostEdit = () => {
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, }} component="form" onSubmit={formik.handleSubmit}>
-        <TextField fullWidth label="Title" margin="normal" {...formik.getFieldProps("title")} />
-        <TextField fullWidth label="Image url" placeholder="Leave blank for random image." {...formik.getFieldProps("image")} error={!!formik.errors.title && formik.touched.title} helperText={formik.touched.title && formik.errors.title} />
-        <TextField fullWidth label="Body" margin="normal" multiline rows={5} {...formik.getFieldProps("body")} />
-        <TextField fullWidth label="Tags (comma separated)" margin="normal" {...formik.getFieldProps("tags")} />
+        <TextField fullWidth size="small" label="Title" margin="normal" {...formik.getFieldProps("title")} />
+        <TextField fullWidth size="small" label="Image url" placeholder="Leave blank for random image." {...formik.getFieldProps("image")} error={!!formik.errors.title && formik.touched.title} helperText={formik.touched.title && formik.errors.title} />
+        <TextField fullWidth placeholder="Enter the blog body details." label="Blog Details" margin="normal" multiline rows={5} {...formik.getFieldProps("body")} />
+        <TextField fullWidth size="small" label="Tags (comma separated)" margin="normal" {...formik.getFieldProps("tags")} />
         <Box sx={{ display: 'flex' }}>
           <Button type="submit" variant="contained" sx={{ mx: 'auto', background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', mt: 2, px: { xs: 1, md: 3, lg: 8 } }} disabled={loading}>
             {loading ? (
