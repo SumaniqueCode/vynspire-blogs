@@ -1,73 +1,78 @@
-# React + TypeScript + Vite
+# Vynspire Blogs — Frontend Technical Assessment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fully functional **Blog Platform** built as part of the **Frontend Developer (React/Next.js)** technical assessment for **Vynspire**.  
+The project demonstrates modern frontend practices including authentication, protected routes, CRUD operations, custom hooks, and clean architecture.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Demo & Repository
 
-## React Compiler
+- 🔗 **Live URL:** https://vynspire-blogs.vercel.app/
+- 📦 **GitHub Repo:** https://github.com/SumaniqueCode/vynspire-blogs
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🔐 Credentials
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- You can also register new users.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🛠 Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Framework:** React (Vite) + TypeScript  
+- **State Management:** Redux Toolkit  
+- **Routing:** React Router DOM  
+- **UI Library:** Material UI (MUI)  
+- **Forms & Validation:** Formik + Yup  
+- **API Handling:** Axios  
+- **Mock Backend:** mockapi.io  
+- **Auth Storage:** localStorage (Fake JWT)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ✨ Features Implemented
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 🧑‍💼 Authentication
+- Login and registration functionality implemented.
+- Fake JWT token stored securely in `localStorage`.
+- Custom `useAuth` hook manages authentication state, login, and logout.
+
+### 🔐 Protected Routes
+- Dashboard, Create, Edit, and Delete routes are protected using `PrivateRoute`.
+- Unauthorized users are automatically redirected to the login page.
+- Authentication status is derived from Redux state and persisted storage.
+
+### 📝 Blog Management (CRUD)
+- View blog list and individual blog details.
+- Logged-in users can create new blog posts.
+- Only the **author of a blog** can edit or delete their own posts.
+- Blog operations are managed using a custom `usePosts` hook.
+
+### 🔍 Search & Pagination
+- Client-side search implemented for blog posts.
+- Pagination added to improve performance and user experience.
+
+### 🎨 UI & Responsiveness
+- Clean, modern, and responsive layout using MUI.
+- Reusable components and layout structure maintained throughout the app.
+- Loader and error states handled properly for async actions.
+
+---
+
+## 🧠 Architecture Highlights
+
+- **Redux Toolkit slices** used for authentication and posts.
+- **Custom Hooks (`useAuth`, `usePosts`)** abstract business logic.
+- **Reusable Components** for layout, forms, and UI elements.
+- **Type-safe codebase** using TypeScript interfaces and models.
+
+---
+
+## ⚙️ Local Setup
+
+```bash
+git clone https://github.com/SumaniqueCode/vynspire-blogs.git
+cd vynspire-blogs
+npm install
+npm run dev
