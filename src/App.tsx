@@ -14,14 +14,14 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<Layout />}>
-          <Route index element={<Login />} />
+          <Route index element={<Blog />} />
           <Route path='register' element={<Register />} />
           <Route path='login' element={<Login />} />
           <Route path='posts/'>
-            <Route index element={<PrivateRoute><Blog /></PrivateRoute>} />
+            <Route index element={<Blog />} />
             <Route path="create" element={<PrivateRoute> <PostCreate /> </PrivateRoute>} />
             <Route path="edit/:id" element={<PrivateRoute> <PostEdit /> </PrivateRoute>} />
-            <Route path="view/:id" element={<PrivateRoute>  <PostView /> </PrivateRoute>} />
+            <Route path="view/:id" element={  <PostView />} />
           </Route>
         </Route>
       </Routes>

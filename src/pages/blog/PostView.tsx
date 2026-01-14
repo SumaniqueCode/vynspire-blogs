@@ -9,6 +9,7 @@ import { formatDate } from "../../global/utilities/DateFormatter";
 import { getUsers } from "../../apis/users";
 import DeleteBlog from "./components/DeleteBlog";
 import BlogShare from "./components/BlogShare";
+import { useAuth } from "../../hooks/useAuth";
 
 const stripHtmlTags = (html: string): string => {
     if (!html) return "";
@@ -19,6 +20,7 @@ const stripHtmlTags = (html: string): string => {
 
 const PostView = () => {
     const { posts, fetchPosts, loading } = usePosts();
+    const {isAuthenticated, user} = useAuth();
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const [post, setPost] = useState<Post | null>(null);
@@ -109,16 +111,18 @@ const PostView = () => {
                         }}}>
                     Back
                 </Button>
-                <Stack direction="row" spacing={1}>
-                    <Button variant="outlined" startIcon={<Edit />} onClick={handleEdit}
-                        sx={{ background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', color: 'white', textTransform: "none",
-                            '&:hover': {
-                                background: 'linear-gradient(45deg, #002884 0%, #001654 90%)',
-                            }}}>
-                        Edit
-                    </Button>
-                    <DeleteBlog post={post} />
-                </Stack>
+                {isAuthenticated && post.author==user?.id&&
+                    <Stack direction="row" spacing={1}>
+                        <Button variant="outlined" startIcon={<Edit />} onClick={handleEdit}
+                            sx={{ background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', color: 'white', textTransform: "none",
+                                '&:hover': {
+                                    background: 'linear-gradient(45deg, #002884 0%, #001654 90%)',
+                                }}}>
+                            Edit
+                        </Button>
+                        <DeleteBlog post={post} />
+                    </Stack>
+                }
             </Box>
             <Paper elevation={3} sx={{ px: { xs: 3, sm: 4, md: 5 }, py: { xs: 2, md: 3, lg: 4 } }}>
                 <Typography variant="h3" component="h1" fontWeight={700} gutterBottom sx={{ fontSize: { xs: "1.75rem", sm: "2.5rem", md: "3rem" }, lineHeight: 1.2, mb: 2, }}>
