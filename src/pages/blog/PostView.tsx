@@ -10,7 +10,7 @@ import { getUsers } from "../../apis/users";
 import DeleteBlog from "./components/DeleteBlog";
 import BlogShare from "./components/BlogShare";
 import { useAuth } from "../../hooks/useAuth";
-import { renderHtml } from "../../global/utilities/htmlUtilities";
+import BlogBody from "./components/BlogBody";
 
 const PostView = () => {
     const { posts, fetchPosts, loading } = usePosts();
@@ -148,12 +148,9 @@ const PostView = () => {
                          loading="lazy" />
                     </Box>
                 )}
+<BlogBody html={post.body} />
 
-                <Typography variant="body1" component="div" sx={{
-                    fontSize: { xs: "0.875rem", md: "1rem" },  lineHeight: 1.8,  color: "text.primary",  mb: 4,
-                    "& p": { mb: 2 },  whiteSpace: "pre-wrap",  wordBreak: "break-word"}}>
-                    {renderHtml(post.body)}
-                </Typography>
+
 
                 {post.tags && post.tags.length > 0 && (
                     <Box sx={{ mb: 4 }}>

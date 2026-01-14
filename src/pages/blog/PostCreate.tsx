@@ -65,7 +65,7 @@ const PostCreate = () => {
   });
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 6, mb: 4, boxShadow: 2, borderBottom: 2, borderLeft: 2, borderRadius: 6, py: 6, px: 2, bgcolor: "white" }}>
+    <Container maxWidth="lg" sx={{ mt: 6, mb: 4, boxShadow: 2, borderBottom: 2, borderLeft: 2, borderRadius: 6, py: 6, px: 2, bgcolor: "white" }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h5" mb={2}>
           Create Post
@@ -76,12 +76,12 @@ const PostCreate = () => {
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, }} component="form" onSubmit={formik.handleSubmit}>
         <TextField fullWidth size="small" label="Title" {...formik.getFieldProps("title")} error={!!formik.errors.title && formik.touched.title} helperText={formik.touched.title && formik.errors.title} />
         <TextField fullWidth size="small" label="Image url" placeholder="Enter image url." {...formik.getFieldProps("image")} error={!!formik.errors.image && formik.touched.image} helperText={formik.touched.image && formik.errors.image} />
-        <TextField fullWidth label="Blog details" placeholder="Enter the blog body details." multiline minRows={5} {...formik.getFieldProps("body")} error={!!formik.errors.body && formik.touched.body} helperText={formik.touched.body && formik.errors.body} />
+        <TextField fullWidth label="Blog details" placeholder="Enter the blog body details." multiline minRows={12} {...formik.getFieldProps("body")} error={!!formik.errors.body && formik.touched.body} helperText={formik.touched.body && formik.errors.body} />
         <TextField fullWidth size="small" label="Tags (comma separated)" {...formik.getFieldProps("tags")} />
         <Box sx={{ display: 'flex' }}>
           <Button type="submit" variant="contained" sx={{ mx: 'auto', background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', mt: 2, px: { xs: 1, md: 3, lg: 8 } }} disabled={loading}>
             {loading ? (
-              <CircularProgress size={24} color="inherit" />
+              <CircularProgress size={24} sx={{color: 'white'}} />
             ) : (
               "Create Post"
             )}

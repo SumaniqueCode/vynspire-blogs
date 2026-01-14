@@ -73,23 +73,23 @@ const PostEdit = () => {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 6, mb: 4, boxShadow: 2, borderBottom: 2, borderLeft: 2, borderRadius: 6, py: 6, px: 2, bgcolor: "white" }}>
+    <Container maxWidth="lg" sx={{ mt: 6, mb: 4, boxShadow: 2, borderBottom: 2, borderLeft: 2, borderRadius: 6, py: 6, px: 2, bgcolor: "white" }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h5" mb={2}>
           Edit Post
         </Typography>
-        <Link to={`/posts/view/${post.id}`}><Cancel /></Link>
+        <Link to={`/posts/view/${post.id}`}><Cancel sx={{color:'red'}} /></Link>
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, }} component="form" onSubmit={formik.handleSubmit}>
         <TextField fullWidth size="small" label="Title" margin="normal" {...formik.getFieldProps("title")} />
         <TextField fullWidth size="small" label="Image url" placeholder="Leave blank for random image." {...formik.getFieldProps("image")} error={!!formik.errors.title && formik.touched.title} helperText={formik.touched.title && formik.errors.title} />
-        <TextField fullWidth placeholder="Enter the blog body details." label="Blog Details" margin="normal" multiline rows={5} {...formik.getFieldProps("body")} />
+        <TextField fullWidth placeholder="Enter the blog body details." label="Blog Details" margin="normal" multiline rows={12} {...formik.getFieldProps("body")} />
         <TextField fullWidth size="small" label="Tags (comma separated)" margin="normal" {...formik.getFieldProps("tags")} />
         <Box sx={{ display: 'flex' }}>
           <Button type="submit" variant="contained" sx={{ mx: 'auto', background: 'linear-gradient(45deg, #0247e7ff 0%, #002884 90%)', mt: 2, px: { xs: 1, md: 3, lg: 8 } }} disabled={loading}>
             {loading ? (
-              <CircularProgress size={24} color="inherit" />
+              <CircularProgress sx={{color: 'white'}} size={24} />
             ) : (
               "Edit Post"
             )}
