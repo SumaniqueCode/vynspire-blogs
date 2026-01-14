@@ -20,7 +20,7 @@ const BlogBody = ({ html }: BlogBodyProps) => {
         "& a": { color: "primary.main", textDecoration: "underline", "&:hover": { textDecoration: "none" } },
         "& ul, & ol": { pl: { xs: 3, sm: 4 }, mb: 3 },
         "& li": { mb: 0.5 },
-        "& img": { display: "flex", mx:'auto', maxHeight:400, borderRadius: 3, mb: 4, boxShadow: "0px 4px 12px rgba(0,0,0,0.08)" },
+        "& img": { display: "flex", mx:'auto',maxWidth:'100%', maxHeight:400, borderRadius: 3, mb: 4, boxShadow: "0px 4px 12px rgba(0,0,0,0.08)" },
         "& blockquote": { borderLeft: "4px solid", borderColor: "divider", pl: 3, color: "text.secondary", fontStyle: "italic", mb: 4, backgroundColor: "action.hover", borderRadius: 1, py: 1.5 },
         "& hr": { my: 5, border: "none", borderTop: "1px solid", borderColor: "divider" },
         "& table": { width: "100%", borderCollapse: "collapse", mb: 4 },

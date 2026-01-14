@@ -56,7 +56,7 @@ const BlogCard = ({ post }: BlogProps) => {
                 <Grid container>
                     <Grid size={{ xs: 4, md: 2 }} sx={{ display: "flex", alignItems: "center" }}>
                         <Box component="img" src={post.image} alt={post.title}
-                            sx={{ ml: 1, width: 200, height: 80, objectFit: "cover", borderRadius: 1, border: "1px solid", borderColor: "divider", backgroundColor: "grey.100" }}
+                            sx={{ mx: 1, width: "95%", height: 80, objectFit: "cover", borderRadius: 1, border: "1px solid", borderColor: "divider", backgroundColor: "grey.100" }}
                             loading="lazy"
                         />
                     </Grid>
