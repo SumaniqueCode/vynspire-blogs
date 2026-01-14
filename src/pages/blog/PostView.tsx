@@ -1,6 +1,6 @@
 import { Box, Typography, Button, Paper, Chip, Divider, Alert, Stack, Avatar, Skeleton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState, useMemo, useCallback, type JSX } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { usePosts } from "../../hooks/usePosts";
 import type { Post } from "../../interface/Post";
 import type { User } from "../../interface/User";
